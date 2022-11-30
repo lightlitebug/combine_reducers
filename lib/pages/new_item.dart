@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
+
+import '../redux/app_state.dart';
+import '../redux/item_list/item_list_action.dart';
 
 class NewItem extends StatefulWidget {
   const NewItem({Key? key}) : super(key: key);
@@ -18,12 +23,35 @@ class _NewItemState extends State<NewItem> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: _controller,
-      decoration: const InputDecoration(labelText: 'Add Item'),
-      onSubmitted: (String? newItem) {
-        print(newItem);
+    return StoreConnector<AppState, _ViewModel>(
+      converter: (Store<AppState> store) => _ViewModel.fromStore(store),
+      builder: (BuildContext context, _ViewModel vm) {
+        return TextField(
+          controller: _controller,
+          decoration: const InputDecoration(labelText: 'Add Item'),
+          onSubmitted: (String? newItem) {
+            if (newItem != null && newItem.trim().isNotEmpty) {
+              vm.addItem(newItem);
+              _controller.clear();
+            }
+          },
+        );
       },
+    );
+  }
+}
+
+class _ViewModel {
+  final void Function(String newItem) addItem;
+  const _ViewModel({
+    required this.addItem,
+  });
+
+  static fromStore(Store<AppState> store) {
+    return _ViewModel(
+      addItem: (String newItem) => store.dispatch(
+        AddItemAction(item: newItem),
+      ),
     );
   }
 }
