@@ -3,7 +3,7 @@ import 'package:redux/redux.dart';
 import 'search_term_action.dart';
 import 'search_term_state.dart';
 
-Reducer<SearchTermState> searchTermReducer = combineReducers([
+Reducer<SearchTermState> searchTermReducer = combineReducers<SearchTermState>([
   TypedReducer<SearchTermState, SearchItemsAction>(searchItemsReducer),
 ]);
 

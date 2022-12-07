@@ -1,9 +1,6 @@
+import 'app_state.dart';
 import 'item_list/item_list_reducer.dart';
 import 'search_term/search_term_reducer.dart';
-
-import 'app_state.dart';
-import 'item_list/item_list_action.dart';
-import 'search_term/search_term_action.dart';
 
 AppState reducer(AppState state, dynamic action) {
   // if (action is AddItemAction) {
